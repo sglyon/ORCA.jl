@@ -1,0 +1,7 @@
+name = "ORCA"
+uuid = "200b8544-ab2f-11e8-2d2a-470a6868b879"
+authors = ["Spencer Lyon <spencerlyon2@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+NodeJS = "2bd173c7-0d6d-553b-b6af-13a54713934c"
