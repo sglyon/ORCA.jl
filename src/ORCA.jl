@@ -52,6 +52,7 @@ function PlotlyBase.savefig(
     opts = join(options, " ")
     cmd = length(options) > 0 ? `$orca_cmd graph $(JSON.json(p)) -o $fn $(opts)` :
         `$orca_cmd graph $(JSON.json(p)) -o $fn`
+    run(cmd)
 end
 
 end # module
