@@ -4,4 +4,6 @@ authors = ["Spencer Lyon <spencerlyon2@gmail.com>"]
 version = "0.1.0"
 
 [deps]
-NodeJS = "2bd173c7-0d6d-553b-b6af-13a54713934c"
+Conda = "8f4d0f93-b110-5947-807f-2305c1781a2d"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+PlotlyBase = "a03496cd-edff-5a9b-9e67-9cda94a718b5"
