@@ -1,6 +1,6 @@
 module ORCA
 
-using PlotlyBase, JSON, HTTP
+using PlotlyBase, JSON
 
 export orca_cmd, savefig
 
