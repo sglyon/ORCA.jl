@@ -1,6 +1,6 @@
 module ORCA
 
-using PlotlyBase, JSON
+using PlotlyBase, JSON, HTTP
 
 export orca_cmd, savefig
 
@@ -13,46 +13,71 @@ let
 end
 
 """
-    savefig(p::Plot, fn::AbstractString; kwargs...)
+    savefig(p::Plot, fn::AbstractString; format=nothing, scale=nothing,
+    width=nothing, height=nothing)
 
-Save a plot `p` to a file named `fn`
-
-The following are accepted as keyword arguments
-
-$(_SAVEFIG_DOC_EXTRA)
+Save a plot `p` to a file named `fn`. If `format` is given and is one of
+(png, jpeg, webp, svg, pdf, eps), it will be the format of the file. By
+default the format is guessed from the extension of `fn`. `scale` sets the
+image scale. `width` and `height` set the dimensions, in pixels. Defaults
+are taken from `p.layout`, or supplied by plotly
 """
 function PlotlyBase.savefig(
-        p::Plot, fn::AbstractString; kwargs...
+        p::Plot, fn::AbstractString; format=nothing, scale=nothing,
+        width=nothing, height=nothing
     )
-    kw = Dict{Any,Any}(kwargs)
-    if !haskey(kw, :format)
-        parts = split(basename(fn), '.', limit=2)
-        if length(parts) == 2
-            kw[:format] = String(parts[2])
+    ext = split(fn, ".")[end]
+    if format === nothing
+        format = ext
+    end
+
+    # end early if we got json or html
+    format == "json" && return savejson(p, fn)
+    format == "html" && return open(fn, "w") do f show(f, MIME"text/html"(), p) end
+
+    # construct payload
+    payload = Dict{Any,Any}(:figure => p, :format=>format)
+    scale !== nothing && setindex!(payload, scale, :scale)
+    width !== nothing && setindex!(payload, width, :width)
+    height !== nothing && setindex!(payload, height, :height)
+
+    ensure_server()
+
+    # make request to server
+    res = HTTP.post(
+        "http://localhost:7982", Dict(),
+        JSON.json(payload),
+        status_exception=false
+    )
+
+    # save if success, otherwise report error
+    if res.status == 200
+        open(fn, "w") do f
+            write(f, res.body)
         end
+    else
+        error(String(res.body))
     end
-    options = []
-    for argname in _ARGS
-        arg = pop!(kw, argname, nothing)
-        arg == nothing && continue
-        push!(options, "--$(argname)=$arg")
-    end
-
-    for flagname in _ARGS
-        flag = pop!(kw, flagname, nothing)
-        flag == nothing && continue
-        push!(options, "--$(flagname)=$flag")
-    end
-
-    if length(kw) > 0
-        msg = "Unrecognized keyword argument(s) $(collect(keys(kw)))"
-        error(msg * " Please see docstring for supported arguments")
-    end
-
-    opts = join(options, " ")
-    cmd = length(options) > 0 ? `$orca_cmd graph $(JSON.json(p)) -o $fn $(opts)` :
-        `$orca_cmd graph $(JSON.json(p)) -o $fn`
-    run(cmd)
+    nothing
 end
+
+const proc = Ref{Base.Process}()
+
+function restart_server()
+    global proc
+    if server_running()
+        kill(proc[])
+    end
+    proc[] = open(`$orca_cmd server --port=7982 --graph-only`)
+    atexit(() -> kill(proc[]))
+end
+
+function server_running()
+    global proc
+    isassigned(proc) && process_running(proc[])
+end
+
+ensure_server() = !server_running() && restart_server()
+__init__() = restart_server()
 
 end # module
