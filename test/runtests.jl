@@ -6,7 +6,7 @@ function myplot(fn)
     savefig(plt, fn)
 end
 
-for ext in ["pdf", "png", "eps", "jpeg", "webp"]
+for ext in ["pdf", "png", "jpeg", "webp"]
     # no errors
     @test myplot(tempname() * "." * ext) === nothing
 end
