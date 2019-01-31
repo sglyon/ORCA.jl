@@ -1,6 +1,6 @@
 using Conda
 
-env = @__DIR__
+env = :_ORCA_jl_
 Conda.add_channel("plotly", env)
 Conda.add("plotly-orca", env)
 Conda.update(env)
