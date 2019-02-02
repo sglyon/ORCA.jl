@@ -44,6 +44,8 @@ function PlotlyBase.savefig(io::IO,
     else
         error(String(res.body))
     end
+
+    return nothing
 end
 
 """
@@ -68,6 +70,7 @@ function PlotlyBase.savefig(
     open(fn, "w") do f
         savefig(f, p; format=format, scale=scale, width=width, height=height)
     end
+    return fn
 end
 
 const proc = Ref{Base.Process}()

@@ -8,5 +8,6 @@ end
 
 for ext in ["pdf", "png", "jpeg", "webp"]
     # no errors
-    @test myplot(tempname() * "." * ext) === nothing
+    fn = tempname() * "." * ext
+    @test myplot(fn) == fn
 end
