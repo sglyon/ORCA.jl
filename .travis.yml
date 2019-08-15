@@ -3,7 +3,10 @@ language: julia
 matrix:
   include:
     - os: linux
-      julia: 0.7
+      julia: 
+        - 0.7
+        - 1.0
+        - 1.1
       env: TESTCMD="xvfb-run julia"
     - os: osx
       julia: 0.7
