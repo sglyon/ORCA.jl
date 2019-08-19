@@ -1,13 +1,13 @@
-using ORCA, PlotlyBase, Test
+using ORCA, PlotlyJS, PlotlyBase, Test
 
 function myplot(fn)
     x = 0:0.1:2π
-    plt = Plot(scatter(x=x, y=sin.(x)))
-    savefig(plt, fn)
+    plt = scatter(x=x, y=sin.(x)) |> plot
+    ORCA.savefig(plt, fn)
 end
 
 for ext in ["pdf", "png", "jpeg", "webp"]
     # no errors
     fn = tempname() * "." * ext
-    @test myplot(fn) == fn
+    @test myplot(fn)
 end
