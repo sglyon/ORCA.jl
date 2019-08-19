@@ -1,16 +1,12 @@
 # Documentation: http://docs.travis-ci.com/user/languages/julia/
 language: julia
+os:
+  - linux
+julia:
+  - 1.0
+  - 1.1
+  - nightly
 matrix:
-  include:
-    - os: linux
-      julia: nightly
-      env: TESTCMD="xvfb-run julia"
-    - os: linux
-      julia: 1.1
-      env: TESTCMD="xvfb-run julia"
-    - os: osx
-      julia: 1.1
-      env: TESTCMD="julia"
   allow_failures:
     - julia: nightly
 addons:
@@ -24,9 +20,4 @@ addons:
 
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - $TESTCMD -e 'using Pkg; Pkg.clone(pwd()); Pkg.build("ORCA"); Pkg.test("ORCA"; coverage=true)'
-after_success:
-  # push coverage results to Coveralls
-  - julia -e 'import Pkg; Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
-  # push coverage results to Codecov
-  - julia -e 'import Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+  - xvfb-run julia -e 'using Pkg; Pkg.build(); Pkg.test(coverage=true)'
