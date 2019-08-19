@@ -19,6 +19,6 @@ Some of the export file formats depends upon 3rd party applications. Make sure t
 
 * EPS: For "eps" export "pdf2ps" binary is required. On ubuntu you can get it by "apt-get install poppler-utils"
 
-* WMF, EMF: Inkscape is required for these file types. On ubuntu you can install it by "apt-get install inkscape"
+* EMF: Inkscape is required for these file types. On ubuntu you can install it by "apt-get install inkscape"
 
 Also if you are planning to use ORCA.jl inside a docker container, then "xvfb-run" is needed and can be installed by "apt-get install xvfb" on ubuntu.

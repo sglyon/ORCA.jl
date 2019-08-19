@@ -27,8 +27,8 @@ end
 
 "Check for xvfb-run, required for headless operations (like Docker)"
 xvfb_exists() = program_installed("xvfb-run")
-"Check for inkscape, required for wmf and emf exports"
-inkscape_exists() = program_installed("inkscape") # required for "wmf" and "emf" exports
+"Check for inkscape, required for emf exports"
+inkscape_exists() = program_installed("inkscape") # required for "emf" exports
 "Check for pdftops, required for eps export"
 pdftops_exists() = program_installed("pdftops") # required for eps output
 
