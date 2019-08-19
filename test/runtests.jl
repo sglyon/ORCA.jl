@@ -6,7 +6,7 @@ function myplot(fn)
     ORCA.savefig(plt, fn, verbose=true)
 end
 
-for ext in ["pdf", "png", "jpeg", "webp", "eps", "emf", "svg"]
+for ext in ["pdf", "png", "jpeg", "webp", "eps", "svg"]
     # no errors
     fn = tempname() * "." * ext
     @test myplot(fn)
