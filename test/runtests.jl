@@ -1,4 +1,4 @@
-using ORCA, PlotlyJS, PlotlyBase, Test
+using ORCA, PlotlyJS, Test
 
 function myplot(fn)
     x = 0:0.1:2π
