@@ -6,8 +6,8 @@ function myplot(fn)
     savefig(plt, fn)
 end
 
-for ext in ["pdf", "png", "jpeg", "webp"]
+for ext in ["pdf", "png", "jpeg", "webp", "json", "html"]
     # no errors
-    fn = tempname() * "." * ext
+    @show fn = tempname() * "." * ext
     @test myplot(fn) == fn
 end

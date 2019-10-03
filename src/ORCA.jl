@@ -22,6 +22,7 @@ function PlotlyBase.savefig(io::IO,
 
     # end early if we got json or html
     format == "json" && return JSON.print(io, p)
+    format == "html" && return PlotlyBase.savehtml(io, p)
 
     # construct payload
     payload = Dict{Any,Any}(:figure => p, :format=>format)
