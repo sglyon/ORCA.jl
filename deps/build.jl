@@ -1,7 +1,7 @@
 using NodeJS
 
 function main()
-    run(`$(npm_cmd()) config set scripts-prepent-node-path true`)
+    run(`$(npm_cmd()) config set scripts-prepend-node-path true`)
     run(`$(npm_cmd()) install -g electron@6.1.4 orca`)
 
     @show orca_cmd = "$(joinpath(dirname(npm_cmd().exec[1]), "orca"))"
