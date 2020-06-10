@@ -10,7 +10,7 @@ NodeJS = "2bd173c7-0d6d-553b-b6af-13a54713934c"
 PlotlyBase = "a03496cd-edff-5a9b-9e67-9cda94a718b5"
 
 [compat]
-NodeJS = "1.1"
+NodeJS = "1.0"
 JSON = "0.21"
 HTTP = "0.8"
 PlotlyBase = "≥ 0.3.0"
