@@ -1,7 +1,5 @@
 name: CI
-on:
-  - push
-  - pull_request
+on: push
 jobs:
   test:
     name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }}
@@ -12,7 +10,6 @@ jobs:
           - '1.4'
           - 'nightly'
         os:
-          - ubuntu-latest
           - macOS-latest
           - windows-latest
         arch:
@@ -35,3 +32,37 @@ jobs:
             ${{ runner.os }}-
       - uses: julia-actions/julia-buildpkg@latest
       - uses: julia-actions/julia-runtest@latest
+  test-linux:
+    name: Julia ${{ matrix.version }} - ubuntu-latest - ${{ matrix.arch }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version:
+          - '1.4'
+          - 'nightly'
+        arch:
+          - x64
+    steps:
+      - uses: actions/checkout@v2
+      - uses: julia-actions/setup-julia@v1
+        with:
+          version: ${{ matrix.version }}
+          arch: ${{ matrix.arch }}
+      - uses: actions/cache@v1
+        env:
+          cache-name: cache-artifacts
+        with:
+          path: ~/.julia/artifacts
+          key: ${{ runner.os }}-test-${{ env.cache-name }}-${{ hashFiles('**/Project.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-test-${{ env.cache-name }}-
+            ${{ runner.os }}-test-
+            ${{ runner.os }}-
+      - uses: julia-actions/julia-buildpkg@latest
+      - name: set testCMD linux
+        if: ${{ matrix.o}}
+      - name: install xvfb
+        run: apt-get update && apt-get install -y xvfb libgtk-3-0 libgconf-2-4
+      - name: run tests
+        run: |
+            xvfb-run julia --color=yes --check-bounds=yes --project -e 'using Pkg; Pkg.test(coverage=true)'
