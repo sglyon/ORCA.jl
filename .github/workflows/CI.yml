@@ -62,7 +62,9 @@ jobs:
             ${{ runner.os }}-
       - uses: julia-actions/julia-buildpkg@latest
       - name: install xvfb
-        run: apt-get update && apt-get install -y xvfb libgtk-3-0 libgconf-2-4
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb libgtk-3-0 libgconf-2-4
       - name: run tests
         run: |
             xvfb-run julia --color=yes --check-bounds=yes --project -e 'using Pkg; Pkg.test(coverage=true)'
