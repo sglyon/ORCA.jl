@@ -3,14 +3,17 @@ using NodeJS
 function main()
     run(`$(npm_cmd()) config set scripts-prepend-node-path true`)
     run(`$(npm_cmd()) install -g electron@6.1.4 orca`)
+    @show npm_cmd()
+    @show nodejs_cmd()
 
-    @show orca_cmd = let
+    orca_cmd = let
         node_exec = NodeJS.nodejs_cmd().exec[1]
         orca_file = joinpath(dirname(NodeJS.npm_cmd().exec[1]), "orca")
         @show isfile(node_exec)
         @show isfile(orca_file)
         @show isfile(string(orca_file, ".cmd"))
-        Sys.iswindows() ? `$(orca_file).cmd` : `$node_exec $orca_file`
+
+        @show Sys.iswindows() ? `$(orca_file).cmd` : `$node_exec $orca_file`
     end
 
     # Docker creates a file /.dockerenv presence of which
