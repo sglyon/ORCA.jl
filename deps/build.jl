@@ -8,6 +8,8 @@ function main()
         node_exec = NodeJS.nodejs_cmd().exec[1]
         orca_file = joinpath(dirname(NodeJS.npm_cmd().exec[1]), "orca")
         Sys.iswindows() ? `$(orca_file).cmd` : `$node_exec $orca_file`
+        @show isfile(node_exec)
+        @show isfile(orca_file)
     end
 
     # Docker creates a file /.dockerenv presence of which
