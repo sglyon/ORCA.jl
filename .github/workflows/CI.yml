@@ -1,5 +1,7 @@
 name: CI
-on: push
+on:
+  - push
+  - pull_request
 jobs:
   test:
     name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }}
@@ -59,8 +61,6 @@ jobs:
             ${{ runner.os }}-test-
             ${{ runner.os }}-
       - uses: julia-actions/julia-buildpkg@latest
-      - name: set testCMD linux
-        if: ${{ matrix.o}}
       - name: install xvfb
         run: apt-get update && apt-get install -y xvfb libgtk-3-0 libgconf-2-4
       - name: run tests
