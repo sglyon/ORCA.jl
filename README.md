@@ -1,4 +1,14 @@
+# DEPRECATION NOTICE
+
+The primary purpose of this package is to enable saving `PlotlyBase.Plot` and `PlotlyJS.SyncPlot` figures to files like svg, png, pdf, etc.
+
+This functionality is now built in to PlotlyBase.jl itself -- and thus available to PlotlyJS -- making ORCA.jl obsolete and not needed.
+
+Please use the `savefig` routines built directly in to PlotlyBase instead of using this package
+
 # ORCA.jl
+
+
 
 [![Build Status](https://travis-ci.org/sglyon/ORCA.jl.svg?branch=master)](https://travis-ci.org/sglyon/ORCA.jl)
 
